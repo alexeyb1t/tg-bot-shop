@@ -1,6 +1,8 @@
-import { Context } from 'telegraf';
 import { fetchProducts } from '../api/product-api';
+import { Context, Markup } from 'telegraf';
+import { TelegrafContext } from '../interfaces/telegraf-context';
 import { BasketService } from '../services/basket-service';
+import { CATEGORY_MENU } from '../constants/category';
 
 export async function basketScreen(ctx: Context) {
   const key = (ctx.update as any).callback_query.data;
@@ -15,8 +17,15 @@ export async function basketScreen(ctx: Context) {
     throw new Error();
   }
 
-  const basket = new BasketService();
-  basket.addToBasket(product);
+  const basketService = new BasketService((ctx as TelegrafContext).session);
 
-  ctx.reply('Added to basket');
+  basketService.addToBasket(product);
+
+  const total = basketService.total();
+
+  const keyboard = Markup.inlineKeyboard([
+    Markup.button.callback('Back', CATEGORY_MENU),
+  ]);
+
+  ctx.reply(`Added to basket ${product.name}, Total: ${total}`, keyboard);
 }

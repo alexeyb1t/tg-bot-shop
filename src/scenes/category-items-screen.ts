@@ -11,8 +11,6 @@ export async function categoryItemsScreen(ctx: Context) {
   const category = ctx.update.callback_query.data;
 
   const products = await fetchProducts(category);
-  // Markup.button.callback('50', '50'),
-  // Markup.button.callback('100', '100')
 
   const keyboard = Markup.inlineKeyboard(
     products.map((product) =>

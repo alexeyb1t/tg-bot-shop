@@ -1,0 +1,1 @@
+export const CATEGORY_MENU = 'CATEGORY_MENU';

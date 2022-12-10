@@ -1,8 +1,12 @@
-import { Telegraf, Markup, Context } from 'telegraf';
-import { Category } from '../interfaces/category';
+import { Context, Markup } from 'telegraf';
 import { fetchCategories } from '../api/category-api';
+import { TelegrafContext } from '../interfaces/telegraf-context';
 
 export async function categoryScreen(ctx: Context) {
+  (ctx as TelegrafContext).session.basket = {
+    items: [],
+  };
+
   const categories = await fetchCategories();
 
   const keyboard = Markup.inlineKeyboard([
